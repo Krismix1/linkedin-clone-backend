@@ -93,6 +93,16 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <!-- https://github.com/HubSpot/prettier-maven-plugin -->
+                <groupId>com.hubspot.maven.plugins</groupId>
+                <artifactId>prettier-maven-plugin</artifactId>
+                <version>0.7</version>
+                <configuration>
+                    <ignoreConfigFile>false</ignoreConfigFile>
+                    <ignoreEditorConfig>true</ignoreEditorConfig>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

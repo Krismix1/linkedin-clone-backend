@@ -9,5 +9,4 @@ public class LinkedinCloneBackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(LinkedinCloneBackendApplication.class, args);
     }
-
 }
