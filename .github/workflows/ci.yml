@@ -5,9 +5,11 @@ name: Format check, tests and compilation CI
 
 on:
   push:
-    branches: [ "*" ]
+    branches:
+      - '**'
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
   build:
