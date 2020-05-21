@@ -1,0 +1,9 @@
+{
+  "name": "linkedin-clone-backend-formatter",
+  "version": "1.0.0",
+  "description": "A node.js environment for the formatting tool used in development of Spring Java application",
+  "dependencies": {
+    "prettier": "^2.0.5",
+    "prettier-plugin-java": "^0.8.0"
+  }
+}
