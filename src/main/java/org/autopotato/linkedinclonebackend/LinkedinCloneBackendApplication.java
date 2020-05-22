@@ -14,7 +14,9 @@ public class LinkedinCloneBackendApplication {
     }
 
     /**
-     * Configure CORS settings to all mappings, origins and headers. Allow only GET and POST requests
+     * Configure CORS settings to all mappings and headers. Allow only GET and POST requests and
+     * requests from localhost:4200.
+     *
      * @return WebMvcConfigurer with the necessary settings
      */
     @Bean
@@ -25,7 +27,7 @@ public class LinkedinCloneBackendApplication {
             public void addCorsMappings(CorsRegistry registry) {
                 registry
                     .addMapping("/**")
-                    .allowedOrigins("*")
+                    .allowedOrigins("http://localhost:4200")
                     .allowedMethods("GET", "POST")
                     .allowedHeaders("*");
             }

@@ -1,6 +1,6 @@
-# Linkedin Clone Backend
+# LinkedIn Clone Backend
 
-This repository keeps track of development of the Java Spring backend code of the Linkedin Clone project
+This repository keeps track of development of the Java Spring backend code of the LinkedIn Clone project
 
 ### For developers
 
