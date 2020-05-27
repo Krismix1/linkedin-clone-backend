@@ -1,5 +1,7 @@
 # LinkedIn Clone Backend
 
+![Format check, tests and compilation CI](https://github.com/automatic-potato/linkedin-clone-backend/workflows/Format%20check,%20tests%20and%20compilation%20CI/badge.svg?branch=master)
+
 This repository keeps track of development of the Java Spring backend code of the LinkedIn Clone project
 
 ### For developers
@@ -14,3 +16,5 @@ In order to setup the project with Prettier formatting tool on your workstation 
 4. Install a `Prettier` plugin in IntelliJ IDEA.
 5. Navigate to `Languages & Frameworks > JavaScript > Prettier` inside `Preferences` of IntelliJ and choose desired `Node interpreter` and `Prettier package` (both should be autodetected by the IDE, if not the prettier package can be found in `node_modules/prettier` folder inside the project folder)
 6. In order to trigger the formatter press `Shift+Command+A` (for macOS) and `Shift+Control+A` (for Windows/Linux) to trigger `Find Action` and search for `Reformat with Prettier` option
+7. Other recommended plugins for IntelliJ IDEA are:
+    - `Lombok`
