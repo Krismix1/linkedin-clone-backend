@@ -2,11 +2,13 @@ package org.autopotato.linkedinclonebackend.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class Connection {
-    private int id;
-    private Person requester;
-    private Person receiver;
+    private long id;
+    private final Person sender;
+    private final Person receiver;
 }
