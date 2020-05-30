@@ -23,13 +23,19 @@ public class MockConnectionRequestRepository
     }
 
     @Override
-    public Optional<ConnectionRequest> findById(Long aLong) {
-        return Optional.ofNullable(db.get(aLong));
+    public Optional<ConnectionRequest> findById(Long id) throws IllegalArgumentException {
+        if (id == null) {
+            throw new IllegalArgumentException();
+        }
+        return Optional.ofNullable(db.get(id));
     }
 
     @Override
-    public boolean existsById(Long aLong) {
-        return db.containsKey(aLong);
+    public boolean existsById(Long id) throws IllegalArgumentException {
+        if (id == null) {
+            throw new IllegalArgumentException();
+        }
+        return db.containsKey(id);
     }
 
     @Override
@@ -43,14 +49,24 @@ public class MockConnectionRequestRepository
     }
 
     @Override
-    public void deleteById(Long aLong) throws NoSuchElementException {
-        if (db.remove(aLong) == null) {
+    public void deleteById(Long id)
+        throws NoSuchElementException, IllegalArgumentException {
+        if (id == null) {
+            throw new IllegalArgumentException();
+        }
+        if (db.remove(id) == null) {
             throw new NoSuchElementException();
         }
     }
 
     @Override
-    public void delete(ConnectionRequest entity) {
-        db.remove(entity.getId());
+    public void delete(ConnectionRequest entity)
+        throws NoSuchElementException, IllegalArgumentException {
+        if (entity == null) {
+            throw new IllegalArgumentException();
+        }
+        if (db.remove(entity.getId()) == null) {
+            throw new NoSuchElementException();
+        }
     }
 }

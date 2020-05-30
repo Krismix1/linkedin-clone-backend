@@ -34,11 +34,11 @@ public class ConnectionRequestService {
         return repo.findAll();
     }
 
-    public void delete(long id) throws NoSuchElementException {
+    public void delete(long id) throws NoSuchElementException, IllegalArgumentException {
         repo.deleteById(id);
     }
 
-    public void accept(long id) throws NoSuchElementException {
+    public void accept(long id) throws NoSuchElementException, IllegalArgumentException {
         var optRequest = repo.findById(id);
         if (optRequest.isPresent()) {
             ConnectionRequest request = optRequest.get();
