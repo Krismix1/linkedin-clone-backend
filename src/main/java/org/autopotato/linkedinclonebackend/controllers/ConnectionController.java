@@ -41,6 +41,12 @@ public class ConnectionController {
         Long receiverId;
     }
 
+    /**
+     * Create a new {@link ConnectionRequest}
+     * @param request {@link NewConnectionRequestDTO} with information about the sender and receiver
+     * @return Bad Request response if the {@param request} cannot be Validated or sender and receiver id is the same
+     *         Created response otherwise
+     */
     @PostMapping("/requests")
     public ResponseEntity<?> createConnectionRequest(
         @RequestBody @Validated NewConnectionRequestDTO request
@@ -59,11 +65,21 @@ public class ConnectionController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    /**
+     * Gets all {@link ConnectionRequest}
+     * @return {@link Iterable} of {@link ConnectionRequest} in the database
+     */
     @GetMapping("/requests")
     public Iterable<ConnectionRequest> getAllConnectionRequest() {
         return connectionRequestService.getAll();
     }
 
+    /**
+     * Deny or cancel a {@link ConnectionRequest}
+     * @param id ID of the {@link ConnectionRequest} to be deleted
+     * @return Not Found if {@param id} is not in the system
+     *         No Content otherwise
+     */
     @DeleteMapping("/requests/{id}")
     public ResponseEntity<?> deleteConnectionRequest(@PathVariable long id) {
         try {
@@ -74,6 +90,12 @@ public class ConnectionController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Accept a {@link ConnectionRequest}
+     * @param id ID of the {@link ConnectionRequest} to be accepted
+     * @return Not Found if {@param id} is not in the system
+     *         Created otherwise
+     */
     @PostMapping("/requests/accept/{id}")
     public ResponseEntity<?> acceptConnectionRequest(@PathVariable long id) {
         try {
