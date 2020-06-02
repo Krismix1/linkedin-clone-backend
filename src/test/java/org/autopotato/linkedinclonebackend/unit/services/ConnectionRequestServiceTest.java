@@ -3,8 +3,7 @@ package org.autopotato.linkedinclonebackend.unit.services;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.Collections;
 import java.util.NoSuchElementException;
@@ -13,6 +12,7 @@ import org.autopotato.linkedinclonebackend.model.ConnectionRequest;
 import org.autopotato.linkedinclonebackend.model.Person;
 import org.autopotato.linkedinclonebackend.repositories.MockConnectionRequestRepository;
 import org.autopotato.linkedinclonebackend.services.ConnectionRequestService;
+import org.autopotato.linkedinclonebackend.services.ConnectionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,6 +22,9 @@ import org.mockito.MockitoAnnotations;
 class ConnectionRequestServiceTest {
     @InjectMocks
     ConnectionRequestService connectionRequestService;
+
+    @Mock
+    ConnectionService connectionService;
 
     @Mock
     MockConnectionRequestRepository mockConnectionRequestRepository;
@@ -70,8 +73,8 @@ class ConnectionRequestServiceTest {
 
     @Test
     final void delete() {
-        // TODO: how do I test if it was successful?
-        // fail("Implement me!");
+        connectionRequestService.delete(1);
+        verify(mockConnectionRequestRepository, times(1)).deleteById(anyLong());
     }
 
     @Test
@@ -95,7 +98,11 @@ class ConnectionRequestServiceTest {
         );
         when(mockConnectionRequestRepository.findById(anyLong()))
             .thenReturn(Optional.of(request));
-        // TODO: again no clue how to test it ...
-        // fail("Implement me!");
+
+        connectionRequestService.accept(1);
+
+        verify(mockConnectionRequestRepository, times(1)).findById(anyLong());
+        verify(connectionService, times(1)).create(anyLong(), anyLong());
+        verify(mockConnectionRequestRepository, times(1)).delete(any());
     }
 }
