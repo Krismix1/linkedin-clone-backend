@@ -6,8 +6,8 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
-import java.util.NoSuchElementException;
 import org.autopotato.linkedinclonebackend.controllers.ConnectionController;
+import org.autopotato.linkedinclonebackend.controllers.ResourceNotFoundException;
 import org.autopotato.linkedinclonebackend.model.ConnectionRequest;
 import org.autopotato.linkedinclonebackend.model.Person;
 import org.autopotato.linkedinclonebackend.services.ConnectionRequestService;
@@ -99,8 +99,8 @@ class ConnectionControllerTest {
     }
 
     @Test
-    final void deleteConnectionRequestNoSuchElement() {
-        doThrow(new NoSuchElementException())
+    final void deleteConnectionRequestNoSuchElement() throws ResourceNotFoundException {
+        doThrow(new ResourceNotFoundException(1))
             .when(connectionRequestService)
             .delete(anyLong());
 
@@ -117,8 +117,8 @@ class ConnectionControllerTest {
     }
 
     @Test
-    final void acceptConnectionRequestNoSuchElement() {
-        doThrow(new NoSuchElementException())
+    final void acceptConnectionRequestNoSuchElement() throws ResourceNotFoundException {
+        doThrow(new ResourceNotFoundException(1))
             .when(connectionRequestService)
             .accept(anyLong());
 

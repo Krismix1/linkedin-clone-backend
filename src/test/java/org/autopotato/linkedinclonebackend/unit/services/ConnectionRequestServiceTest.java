@@ -1,6 +1,7 @@
 package org.autopotato.linkedinclonebackend.unit.services;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -8,6 +9,7 @@ import static org.mockito.Mockito.*;
 import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import org.autopotato.linkedinclonebackend.controllers.ResourceNotFoundException;
 import org.autopotato.linkedinclonebackend.model.ConnectionRequest;
 import org.autopotato.linkedinclonebackend.model.Person;
 import org.autopotato.linkedinclonebackend.repositories.MockConnectionRequestRepository;
@@ -59,12 +61,12 @@ class ConnectionRequestServiceTest {
     }
 
     @Test
-    final void deleteThrowingNoSuchElement() {
+    final void deleteThrowingResourceNotFound() {
         doThrow(new NoSuchElementException())
             .when(mockConnectionRequestRepository)
             .deleteById(anyLong());
         assertThrows(
-            NoSuchElementException.class,
+            ResourceNotFoundException.class,
             () -> {
                 connectionRequestService.delete(1);
             }
@@ -72,17 +74,17 @@ class ConnectionRequestServiceTest {
     }
 
     @Test
-    final void delete() {
+    final void delete() throws ResourceNotFoundException {
         connectionRequestService.delete(1);
         verify(mockConnectionRequestRepository, times(1)).deleteById(anyLong());
     }
 
     @Test
-    final void acceptThrowingNoSuchElement() {
+    final void acceptThrowingResourceNotFound() {
         when(mockConnectionRequestRepository.findById(anyLong()))
             .thenReturn(Optional.empty());
         assertThrows(
-            NoSuchElementException.class,
+            ResourceNotFoundException.class,
             () -> {
                 connectionRequestService.accept(1);
             }
@@ -90,7 +92,7 @@ class ConnectionRequestServiceTest {
     }
 
     @Test
-    final void accept() {
+    final void accept() throws ResourceNotFoundException {
         ConnectionRequest request = new ConnectionRequest(
             1,
             new Person(1),

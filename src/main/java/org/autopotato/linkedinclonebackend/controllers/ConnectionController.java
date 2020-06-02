@@ -1,6 +1,7 @@
 package org.autopotato.linkedinclonebackend.controllers;
 
 import java.util.NoSuchElementException;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.Value;
 import org.autopotato.linkedinclonebackend.model.ConnectionRequest;
@@ -35,9 +36,11 @@ public class ConnectionController {
     @Value
     public static class NewConnectionRequestDTO {
         @NotNull
+        @Min(1)
         Long senderId;
 
         @NotNull
+        @Min(1)
         Long receiverId;
     }
 
@@ -84,8 +87,8 @@ public class ConnectionController {
     public ResponseEntity<?> deleteConnectionRequest(@PathVariable long id) {
         try {
             connectionRequestService.delete(id);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
         return ResponseEntity.noContent().build();
     }
@@ -100,8 +103,8 @@ public class ConnectionController {
     public ResponseEntity<?> acceptConnectionRequest(@PathVariable long id) {
         try {
             connectionRequestService.accept(id);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

@@ -1,6 +1,7 @@
 package org.autopotato.linkedinclonebackend.services;
 
 import java.util.NoSuchElementException;
+import org.autopotato.linkedinclonebackend.controllers.ResourceNotFoundException;
 import org.autopotato.linkedinclonebackend.model.ConnectionRequest;
 import org.autopotato.linkedinclonebackend.model.Person;
 import org.autopotato.linkedinclonebackend.repositories.MockConnectionRequestRepository;
@@ -55,8 +56,13 @@ public class ConnectionRequestService {
      * @throws NoSuchElementException if ID doesn't exist
      * @throws IllegalArgumentException if ID is {@literal null}
      */
-    public void delete(long id) throws NoSuchElementException, IllegalArgumentException {
-        repo.deleteById(id);
+    public void delete(long id)
+        throws ResourceNotFoundException, IllegalArgumentException {
+        try {
+            repo.deleteById(id);
+        } catch (NoSuchElementException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     /**
@@ -65,7 +71,8 @@ public class ConnectionRequestService {
      * @throws NoSuchElementException if ID doesn't exist
      * @throws IllegalArgumentException if ID is {@literal null}
      */
-    public void accept(long id) throws NoSuchElementException, IllegalArgumentException {
+    public void accept(long id)
+        throws ResourceNotFoundException, IllegalArgumentException {
         var optRequest = repo.findById(id);
         if (optRequest.isPresent()) {
             ConnectionRequest request = optRequest.get();
@@ -75,7 +82,7 @@ public class ConnectionRequestService {
             );
             repo.delete(request);
         } else {
-            throw new NoSuchElementException();
+            throw new ResourceNotFoundException(id);
         }
     }
 }
