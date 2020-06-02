@@ -4,7 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Collections;
 import org.autopotato.linkedinclonebackend.controllers.ConnectionController;
 import org.autopotato.linkedinclonebackend.controllers.ResourceNotFoundException;
@@ -13,11 +16,21 @@ import org.autopotato.linkedinclonebackend.model.Person;
 import org.autopotato.linkedinclonebackend.services.ConnectionRequestService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class ConnectionControllerTest {
     @InjectMocks
     ConnectionController connectionController;
@@ -27,9 +40,14 @@ class ConnectionControllerTest {
 
     ConnectionController.NewConnectionRequestDTO newConnectionRequestDTO;
 
+    @Autowired
+    MockMvc mockMvc;
+
+    private ObjectMapper jsonMapper;
+
     @BeforeEach
     final void setUp() {
-        MockitoAnnotations.initMocks(this);
+        jsonMapper = new ObjectMapper();
     }
 
     @Test
@@ -48,23 +66,33 @@ class ConnectionControllerTest {
     }
 
     @Test
-    final void createConnectionRequestMethodArgumentNotValid() {
-        //        newConnectionRequestDTO =
-        //            new ConnectionController.NewConnectionRequestDTO(null, 2L);
-        //
-        //        var response = connectionController.createConnectionRequest(
-        //            newConnectionRequestDTO
-        //        );
-        //
-        //        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        //
-        //        newConnectionRequestDTO =
-        //            new ConnectionController.NewConnectionRequestDTO(1L, null);
-        //
-        //        response = connectionController.createConnectionRequest(newConnectionRequestDTO);
-        //
-        //        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        // TODO: switch to HTTP requests
+    final void createConnectionRequestMethodArgumentNotValidSenderNull()
+        throws Exception {
+        newConnectionRequestDTO =
+            new ConnectionController.NewConnectionRequestDTO(null, 2L);
+
+        mockMvc
+            .perform(
+                post("/connections/requests")
+                    .content(jsonMapper.writeValueAsString(newConnectionRequestDTO))
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+            )
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    final void createConnectionRequestMethodArgumentNotValidReceiverNull()
+        throws Exception {
+        newConnectionRequestDTO =
+            new ConnectionController.NewConnectionRequestDTO(1L, null);
+
+        mockMvc
+            .perform(
+                post("/connections/requests")
+                    .content(jsonMapper.writeValueAsString(newConnectionRequestDTO))
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+            )
+            .andExpect(status().isBadRequest());
     }
 
     @Test

@@ -1,6 +1,5 @@
 package org.autopotato.linkedinclonebackend.services;
 
-import lombok.Value;
 import org.autopotato.linkedinclonebackend.model.Connection;
 import org.autopotato.linkedinclonebackend.model.Person;
 import org.autopotato.linkedinclonebackend.repositories.MockConnectionRepository;
