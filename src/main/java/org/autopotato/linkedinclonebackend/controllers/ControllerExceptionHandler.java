@@ -3,6 +3,7 @@ package org.autopotato.linkedinclonebackend.controllers;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
@@ -45,5 +46,14 @@ public class ControllerExceptionHandler {
         return ResponseEntity
             .badRequest()
             .body(new ExceptionResponseDTO<>("Could not find body", null));
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<?> handleResourceNotFoundException(
+        ResourceNotFoundException e
+    ) {
+        return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(new ExceptionResponseDTO<>("Resource not found", e.getMessage()));
     }
 }

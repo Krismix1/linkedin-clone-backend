@@ -15,12 +15,13 @@ import org.autopotato.linkedinclonebackend.model.Person;
 import org.autopotato.linkedinclonebackend.repositories.MockConnectionRequestRepository;
 import org.autopotato.linkedinclonebackend.services.ConnectionRequestService;
 import org.autopotato.linkedinclonebackend.services.ConnectionService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class ConnectionRequestServiceTest {
     @InjectMocks
     ConnectionRequestService connectionRequestService;
@@ -30,11 +31,6 @@ class ConnectionRequestServiceTest {
 
     @Mock
     MockConnectionRequestRepository mockConnectionRequestRepository;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Test
     final void create() {

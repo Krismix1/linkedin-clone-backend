@@ -1,6 +1,5 @@
 package org.autopotato.linkedinclonebackend.controllers;
 
-import java.util.NoSuchElementException;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.Value;
@@ -84,12 +83,9 @@ public class ConnectionController {
      *         No Content otherwise
      */
     @DeleteMapping("/requests/{id}")
-    public ResponseEntity<?> deleteConnectionRequest(@PathVariable long id) {
-        try {
-            connectionRequestService.delete(id);
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    public ResponseEntity<?> deleteConnectionRequest(@PathVariable long id)
+        throws ResourceNotFoundException {
+        connectionRequestService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -100,12 +96,9 @@ public class ConnectionController {
      *         Created otherwise
      */
     @PostMapping("/requests/accept/{id}")
-    public ResponseEntity<?> acceptConnectionRequest(@PathVariable long id) {
-        try {
-            connectionRequestService.accept(id);
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    public ResponseEntity<?> acceptConnectionRequest(@PathVariable long id)
+        throws ResourceNotFoundException {
+        connectionRequestService.accept(id);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

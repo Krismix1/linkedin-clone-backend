@@ -2,8 +2,8 @@ package org.autopotato.linkedinclonebackend.unit.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -120,38 +120,30 @@ class ConnectionControllerTest {
     }
 
     @Test
-    final void deleteConnectionRequest() {
+    final void deleteConnectionRequest() throws ResourceNotFoundException {
         var response = connectionController.deleteConnectionRequest(1);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 
     @Test
-    final void deleteConnectionRequestNoSuchElement() throws ResourceNotFoundException {
-        doThrow(new ResourceNotFoundException(1))
-            .when(connectionRequestService)
-            .delete(anyLong());
-
-        var response = connectionController.deleteConnectionRequest(1);
-
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    final void deleteConnectionRequestNoSuchElement() throws Exception {
+        mockMvc
+            .perform(delete("/connections/requests/1"))
+            .andExpect(status().isNotFound());
     }
 
     @Test
-    final void acceptConnectionRequest() {
+    final void acceptConnectionRequest() throws ResourceNotFoundException {
         var response = connectionController.acceptConnectionRequest(1);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
     @Test
-    final void acceptConnectionRequestNoSuchElement() throws ResourceNotFoundException {
-        doThrow(new ResourceNotFoundException(1))
-            .when(connectionRequestService)
-            .accept(anyLong());
-
-        var response = connectionController.acceptConnectionRequest(1);
-
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    final void acceptConnectionRequestNoSuchElement() throws Exception {
+        mockMvc
+            .perform(post("/connections/requests/accept/1"))
+            .andExpect(status().isNotFound());
     }
 }
