@@ -3,8 +3,10 @@ package org.autopotato.linkedinclonebackend.controllers;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.Value;
+import org.autopotato.linkedinclonebackend.model.Connection;
 import org.autopotato.linkedinclonebackend.model.ConnectionRequest;
 import org.autopotato.linkedinclonebackend.services.ConnectionRequestService;
+import org.autopotato.linkedinclonebackend.services.ConnectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("connections")
 public class ConnectionController {
     private final ConnectionRequestService connectionRequestService;
+    private final ConnectionService connectionService;
 
     @Autowired
-    public ConnectionController(ConnectionRequestService connectionRequestService) {
+    public ConnectionController(
+        ConnectionRequestService connectionRequestService,
+        ConnectionService connectionService
+    ) {
         this.connectionRequestService = connectionRequestService;
+        this.connectionService = connectionService;
     }
 
     /**
@@ -41,6 +48,27 @@ public class ConnectionController {
         @NotNull
         @Min(1)
         Long receiverId;
+    }
+
+    /**
+     * Gets all {@link Connection}
+     * @return {@link Iterable} of {@link ConnectionRequest} in the database
+     */
+    @GetMapping
+    public Iterable<Connection> getAllConnections() {
+        return connectionService.getAll();
+    }
+
+    /**
+     * Delete a {@link Connection}
+     * @param id ID of the {@link Connection} to be deleted
+     * @return Not Found if {@param id} is not in the system
+     *         No Content otherwise
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteConnection(@PathVariable long id) {
+        connectionService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     /**
@@ -72,7 +100,7 @@ public class ConnectionController {
      * @return {@link Iterable} of {@link ConnectionRequest} in the database
      */
     @GetMapping("/requests")
-    public Iterable<ConnectionRequest> getAllConnectionRequest() {
+    public Iterable<ConnectionRequest> getAllConnectionRequests() {
         return connectionRequestService.getAll();
     }
 

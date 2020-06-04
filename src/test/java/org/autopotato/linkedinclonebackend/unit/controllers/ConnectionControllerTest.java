@@ -109,7 +109,7 @@ class ConnectionControllerTest {
         );
         Iterable<ConnectionRequest> requests = Collections.singletonList(request);
         when(connectionRequestService.getAll()).thenReturn(requests);
-        assertEquals(requests, connectionController.getAllConnectionRequest());
+        assertEquals(requests, connectionController.getAllConnectionRequests());
     }
 
     @Test
