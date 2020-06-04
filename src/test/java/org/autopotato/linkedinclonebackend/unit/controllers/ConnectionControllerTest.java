@@ -48,17 +48,6 @@ class ConnectionControllerTest {
 
     private ObjectMapper jsonMapper;
 
-    public final NewConnectionRequestDTO[] conenctionOptions() {
-        return new NewConnectionRequestDTO[] {
-            new NewConnectionRequestDTO(null, 2L),
-            new NewConnectionRequestDTO(1L, null),
-            new NewConnectionRequestDTO(0L, 2L),
-            new NewConnectionRequestDTO(1L, 0L),
-            new NewConnectionRequestDTO(-1L, 2L),
-            new NewConnectionRequestDTO(1L, -1L)
-        };
-    }
-
     @BeforeEach
     final void setUp() {
         jsonMapper = new ObjectMapper();
