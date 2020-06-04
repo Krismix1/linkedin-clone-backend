@@ -83,8 +83,7 @@ public class ConnectionController {
      *         No Content otherwise
      */
     @DeleteMapping("/requests/{id}")
-    public ResponseEntity<?> deleteConnectionRequest(@PathVariable long id)
-        throws ResourceNotFoundException {
+    public ResponseEntity<?> deleteConnectionRequest(@PathVariable long id) {
         connectionRequestService.delete(id);
         return ResponseEntity.noContent().build();
     }
@@ -96,8 +95,7 @@ public class ConnectionController {
      *         Created otherwise
      */
     @PostMapping("/requests/accept/{id}")
-    public ResponseEntity<?> acceptConnectionRequest(@PathVariable long id)
-        throws ResourceNotFoundException {
+    public ResponseEntity<?> acceptConnectionRequest(@PathVariable long id) {
         connectionRequestService.accept(id);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
