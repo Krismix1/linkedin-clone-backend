@@ -11,9 +11,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Collections;
 import org.autopotato.linkedinclonebackend.controllers.ConnectionController;
+import org.autopotato.linkedinclonebackend.model.Connection;
 import org.autopotato.linkedinclonebackend.model.ConnectionRequest;
 import org.autopotato.linkedinclonebackend.model.Person;
 import org.autopotato.linkedinclonebackend.services.ConnectionRequestService;
+import org.autopotato.linkedinclonebackend.services.ConnectionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,11 +43,13 @@ class ConnectionControllerTest {
     @Mock
     ConnectionRequestService connectionRequestService;
 
-    NewConnectionRequestDTO newConnectionRequestDTO;
+    @Mock
+    ConnectionService connectionService;
 
     @Autowired
     MockMvc mockMvc;
 
+    private NewConnectionRequestDTO newConnectionRequestDTO;
     private ObjectMapper jsonMapper;
 
     @BeforeEach
@@ -101,7 +105,7 @@ class ConnectionControllerTest {
     }
 
     @Test
-    final void getAllConnectionRequest() {
+    final void getAllConnectionRequests() {
         ConnectionRequest request = new ConnectionRequest(
             1,
             new Person(1),
@@ -109,7 +113,7 @@ class ConnectionControllerTest {
         );
         Iterable<ConnectionRequest> requests = Collections.singletonList(request);
         when(connectionRequestService.getAll()).thenReturn(requests);
-        assertEquals(requests, connectionController.getAllConnectionRequest());
+        assertEquals(requests, connectionController.getAllConnectionRequests());
     }
 
     @Test
@@ -138,5 +142,25 @@ class ConnectionControllerTest {
         mockMvc
             .perform(post("/connections/requests/accept/1"))
             .andExpect(status().isNotFound());
+    }
+
+    @Test
+    final void getAllConnections() {
+        Connection connection = new Connection(1, new Person(1), new Person(2));
+        Iterable<Connection> connections = Collections.singletonList(connection);
+        when(connectionService.getAll()).thenReturn(connections);
+        assertEquals(connections, connectionController.getAllConnections());
+    }
+
+    @Test
+    final void deleteConnection() {
+        var response = connectionController.deleteConnection(1);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    }
+
+    @Test
+    final void deleteConnectionNoSuchElement() throws Exception {
+        mockMvc.perform(delete("/connections/1")).andExpect(status().isNotFound());
     }
 }
